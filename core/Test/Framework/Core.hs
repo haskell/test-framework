@@ -31,7 +31,7 @@ type TestName = String
 type TestTypeName = String
 
 -- | Main test data type: builds up a list of tests to be run. Users should use the
--- utility functions in e.g. the test-framework-hunit and test-framework-quickcheck
+-- utility functions in e.g. the test-framework-hunit and test-framework-quickcheck2
 -- packages to create instances of 'Test', and then build them up into testsuites
 -- by using 'testGroup' and lists.
 --
