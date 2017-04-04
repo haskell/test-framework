@@ -31,6 +31,9 @@ matrix:
     - env: CABALVER=1.22 GHCVER=7.10.2
       compiler: ": #GHC 7.10.2"
       addons: {apt: {packages: [cabal-install-1.22,ghc-7.10.2], sources: [hvr-ghc]}}
+    - env: CABALVER=2.0 GHCVER=8.2.1
+      compiler: ": #GHC 8.2.1"
+      addons: {apt: {packages: [cabal-install-2.0,ghc-8.2.1], sources: [hvr-ghc]}}
     - env: CABALVER=head GHCVER=head
       compiler: ": #GHC head"
       addons: {apt: {packages: [cabal-install-head,ghc-head], sources: [hvr-ghc]}}
@@ -69,7 +72,7 @@ install:
      mkdir -p $HOME/.ghc $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin;
      cabal install --only-dependencies $TARGETS;
    fi
- 
+
 # snapshot package-db on cache miss
  - if [ ! -d $HOME/.cabsnap ];
    then
@@ -88,7 +91,7 @@ script:
  - cabal sdist
  - SRC_TGZ=$(cabal info . | awk '{print $2;exit}').tar.gz && (cd dist && cabal install --force-reinstalls "$SRC_TGZ")
  - cd ..
- 
+
  - cd hunit/
  - cabal configure -v2
  - cabal build
@@ -102,7 +105,7 @@ script:
  - cabal sdist
  - SRC_TGZ=$(cabal info . | awk '{print $2;exit}').tar.gz && (cd dist && cabal install --force-reinstalls "$SRC_TGZ")
  - cd ..
- 
+
 # make sure the example code still works
  - cd example/
  - cabal configure
