@@ -13,6 +13,7 @@ Maintainer:          Libraries List <libraries@haskell.org>
 Homepage:            https://batterseapower.github.io/test-framework/
 Bug-Reports:         https://github.com/haskell/test-framework/issues
 Build-Type:          Simple
+Tested-With:         GHC==8.2.1, GHC==8.0.2, GHC==7.10.3, GHC==7.8.4, GHC==7.6.3, GHC==7.4.2, GHC==7.2.2, GHC==7.0.4
 
 Flag Tests
         Description:    Build the tests
