@@ -137,13 +137,17 @@ defaultMainWithOpts tests ropts = do
     -- Get a lazy list of the test results, as executed in parallel
     running_tests <- runTests ropts' tests
 
-    isplain <- case unK $ ropt_color_mode ropts' of
+    isplain' <- case unK $ ropt_color_mode ropts' of
         ColorAuto   -> not `fmap` hIsTerminalDevice stdout
         ColorNever  -> return True
         ColorAlways -> return False
 
+    let hide_successes' = unK $ ropt_hide_successes ropts'
+
+    let console_options = ConsoleOptions isplain' hide_successes'
+
     -- Show those test results to the user as we get them
-    fin_tests <- showRunTestsTop isplain (unK $ ropt_hide_successes ropts') running_tests
+    fin_tests <- showRunTestsTop console_options running_tests
     let test_statistics' = gatherStatistics fin_tests
 
     -- Output XML report (if requested)

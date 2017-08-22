@@ -1,5 +1,6 @@
 module Test.Framework.Runners.Console.Run (
         showRunTestsTop
+      , ConsoleOptions (..)
     ) where
 
 import Test.Framework.Core
@@ -25,33 +26,36 @@ import Data.Monoid (mempty)
 import Control.Arrow (second, (&&&))
 import Control.Monad (unless)
 
+data ConsoleOptions = ConsoleOptions { isplain           :: Bool
+                                     , hide_successes    :: Bool
+                                     }
 
-showRunTestsTop :: Bool -> Bool -> [RunningTest] -> IO [FinishedTest]
-showRunTestsTop isplain hide_successes running_tests = (if isplain then id else hideCursorDuring) $ do
+showRunTestsTop :: ConsoleOptions -> [RunningTest] -> IO [FinishedTest]
+showRunTestsTop options running_tests = (if isplain options then id else hideCursorDuring) $ do
     -- Show those test results to the user as we get them. Gather statistics on the fly for a progress bar
     let test_statistics = initialTestStatistics (totalRunTestsList running_tests)
-    (test_statistics', finished_tests) <- showRunTests isplain hide_successes 0 test_statistics running_tests
+    (test_statistics', finished_tests) <- showRunTests options 0 test_statistics running_tests
     
     -- Show the final statistics
     putStrLn ""
-    putDoc $ possiblyPlain isplain $ showFinalTestStatistics test_statistics'
+    putDoc $ possiblyPlain (isplain options) $ showFinalTestStatistics test_statistics'
     
     return finished_tests
 
 
 -- This code all /really/ sucks.  There must be a better way to seperate out the console-updating
 -- and the improvement-traversing concerns - but how?
-showRunTest :: Bool -> Bool -> Int -> TestStatistics -> RunningTest -> IO (TestStatistics, FinishedTest)
-showRunTest isplain hide_successes indent_level test_statistics (RunTest name test_type (SomeImproving improving_result)) = do
+showRunTest :: ConsoleOptions -> Int -> TestStatistics -> RunningTest -> IO (TestStatistics, FinishedTest)
+showRunTest options indent_level test_statistics (RunTest name test_type (SomeImproving improving_result)) = do
     let progress_bar = testStatisticsProgressBar test_statistics
-    (property_text, property_suceeded) <- showImprovingTestResult isplain hide_successes indent_level name progress_bar improving_result
+    (property_text, property_suceeded) <- showImprovingTestResult options indent_level name progress_bar improving_result
     return (updateTestStatistics (\count -> adjustTestCount test_type count mempty) property_suceeded test_statistics, RunTest name test_type (property_text, property_suceeded))
-showRunTest isplain hide_successes indent_level test_statistics (RunTestGroup name tests) = do
+showRunTest options indent_level test_statistics (RunTestGroup name tests) = do
     putDoc $ (indent indent_level (text name <> char ':')) <> linebreak
-    fmap (second $ RunTestGroup name) $ showRunTests isplain hide_successes (indent_level + 2) test_statistics tests
+    fmap (second $ RunTestGroup name) $ showRunTests options (indent_level + 2) test_statistics tests
 
-showRunTests :: Bool -> Bool -> Int -> TestStatistics -> [RunningTest] -> IO (TestStatistics, [FinishedTest])
-showRunTests isplain hide_successes indent_level = mapAccumLM (showRunTest isplain hide_successes indent_level)
+showRunTests :: ConsoleOptions -> Int -> TestStatistics -> [RunningTest] -> IO (TestStatistics, [FinishedTest])
+showRunTests options indent_level = mapAccumLM (showRunTest options indent_level)
 
 
 testStatisticsProgressBar :: TestStatistics -> Doc
@@ -66,17 +70,17 @@ testStatisticsProgressBar test_statistics = progressBar (colorPassOrFail no_fail
     terminal_width = 79
 
 
-showImprovingTestResult :: TestResultlike i r => Bool -> Bool -> Int -> String -> Doc -> (i :~> r) -> IO (String, Bool)
-showImprovingTestResult isplain hide_successes indent_level test_name progress_bar improving = do
+showImprovingTestResult :: TestResultlike i r => ConsoleOptions -> Int -> String -> Doc -> (i :~> r) -> IO (String, Bool)
+showImprovingTestResult options indent_level test_name progress_bar improving = do
     -- Consume the improving value until the end, displaying progress if we are not in "plain" mode
-    (result, success) <- if isplain then return $ improvingLast improving'
-                                    else showImprovingTestResultProgress (return ()) indent_level test_name progress_bar improving'
-    unless (success && hide_successes) $ do
+    (result, success) <- if isplain options then return $ improvingLast improving'
+                                            else showImprovingTestResultProgress (return ()) options indent_level test_name progress_bar improving'
+    unless (success && hide_successes options) $ do
         let (result_doc, extra_doc) | success   = (brackets $ colorPass (text result), empty)
                                     | otherwise = (brackets (colorFail (text "Failed")), text result <> linebreak)
         
         -- Output the final test status and a trailing newline
-        putTestHeader indent_level test_name (possiblyPlain isplain result_doc)
+        putTestHeader indent_level test_name (possiblyPlain (isplain options) result_doc)
         -- Output any extra information that may be required, e.g. to show failure reason
         putDoc extra_doc
 
@@ -84,18 +88,18 @@ showImprovingTestResult isplain hide_successes indent_level test_name progress_b
   where
     improving' = bimapImproving show (show &&& testSucceeded) improving
 
-showImprovingTestResultProgress :: IO () -> Int -> String -> Doc -> (String :~> (String, Bool)) -> IO (String, Bool)
-showImprovingTestResultProgress erase indent_level test_name progress_bar improving = do
+showImprovingTestResultProgress :: IO () -> ConsoleOptions -> Int -> String -> Doc -> (String :~> (String, Bool)) -> IO (String, Bool)
+showImprovingTestResultProgress erase options indent_level test_name progress_bar improving = do
     -- Update the screen every every 200ms
     improving_list <- consumeListInInterval 200000 (consumeImproving improving)
     case listToMaybeLast improving_list of
         Nothing         -> do -- 200ms was somehow not long enough for a single result to arrive: try again!
-            showImprovingTestResultProgress erase indent_level test_name progress_bar improving
+            showImprovingTestResultProgress erase options indent_level test_name progress_bar improving
         Just improving' -> do -- Display that new improving value to the user
-            showImprovingTestResultProgress' erase indent_level test_name progress_bar improving'
+            showImprovingTestResultProgress' erase options indent_level test_name progress_bar improving'
 
-showImprovingTestResultProgress' :: IO () -> Int -> String -> Doc -> (String :~> (String, Bool)) -> IO (String, Bool)
-showImprovingTestResultProgress' erase _ _ _ (Finished result) = do
+showImprovingTestResultProgress' :: IO () -> ConsoleOptions -> Int -> String -> Doc -> (String :~> (String, Bool)) -> IO (String, Bool)
+showImprovingTestResultProgress' erase _ _ _ _ (Finished result) = do
     erase
     -- There may still be a progress bar on the line below the final test result, so 
     -- remove it as a precautionary measure in case this is the last test in a group
@@ -104,12 +108,12 @@ showImprovingTestResultProgress' erase _ _ _ (Finished result) = do
     clearLine
     cursorUpLine 1
     return result
-showImprovingTestResultProgress' erase indent_level test_name progress_bar (Improving intermediate rest) = do
+showImprovingTestResultProgress' erase _ indent_level test_name progress_bar (Improving intermediate rest) = do
     erase
     putTestHeader indent_level test_name (brackets (text intermediate))
     putDoc progress_bar
     hFlush stdout
-    showImprovingTestResultProgress (cursorUpLine 1 >> clearLine) indent_level test_name progress_bar rest
+    showImprovingTestResultProgress (cursorUpLine 1 >> clearLine) options indent_level test_name progress_bar rest
 
 possiblyPlain :: Bool -> Doc -> Doc
 possiblyPlain True  = plain
