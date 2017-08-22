@@ -84,7 +84,10 @@ optionsDescription = [
             "use ANSI terminal features to display the test run",
         Option [] ["hide-successes"]
             (NoArg (mempty { ropt_hide_successes = Just True }))
-            "hide sucessful tests, and only show failures"
+            "hide sucessful tests, and only show failures",
+        Option [] ["hide-progress-bar"]
+            (NoArg (mempty { ropt_hide_progress_bar = Just True }))
+            "hide progress bar, useful for pseudo terminal such as CI"
     ]
 
 -- | Parse the specified command line arguments into a 'RunnerOptions' and some remaining arguments,
@@ -143,8 +146,9 @@ defaultMainWithOpts tests ropts = do
         ColorAlways -> return False
 
     let hide_successes' = unK $ ropt_hide_successes ropts'
+    let hide_progress_bar' = unK $ ropt_hide_progress_bar ropts'
 
-    let console_options = ConsoleOptions isplain' hide_successes'
+    let console_options = ConsoleOptions isplain' hide_successes' hide_progress_bar'
 
     -- Show those test results to the user as we get them
     fin_tests <- showRunTestsTop console_options running_tests
@@ -182,5 +186,6 @@ completeRunnerOptions ro = RunnerOptions {
             ropt_xml_nested = K $ ropt_xml_nested ro `orElse` False,
             ropt_color_mode = K $ ropt_color_mode ro `orElse` ColorAuto,
             ropt_hide_successes = K $ ropt_hide_successes ro `orElse` False,
-            ropt_list_only      = K $ ropt_list_only      ro `orElse` False
+            ropt_list_only      = K $ ropt_list_only      ro `orElse` False,
+            ropt_hide_progress_bar = K $ ropt_hide_progress_bar ro `orElse` False
         }

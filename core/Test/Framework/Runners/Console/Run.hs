@@ -28,6 +28,7 @@ import Control.Monad (unless)
 
 data ConsoleOptions = ConsoleOptions { isplain           :: Bool
                                      , hide_successes    :: Bool
+                                     , hide_progress_bar :: Bool
                                      }
 
 showRunTestsTop :: ConsoleOptions -> [RunningTest] -> IO [FinishedTest]
@@ -99,19 +100,19 @@ showImprovingTestResultProgress erase options indent_level test_name progress_ba
             showImprovingTestResultProgress' erase options indent_level test_name progress_bar improving'
 
 showImprovingTestResultProgress' :: IO () -> ConsoleOptions -> Int -> String -> Doc -> (String :~> (String, Bool)) -> IO (String, Bool)
-showImprovingTestResultProgress' erase _ _ _ _ (Finished result) = do
+showImprovingTestResultProgress' erase options _ _ _ (Finished result) = do
     erase
     -- There may still be a progress bar on the line below the final test result, so 
     -- remove it as a precautionary measure in case this is the last test in a group
     -- and hence it will not be erased in the normal course of test display.
-    putStrLn ""
+    unless (hide_progress_bar options) $ putStrLn ""
     clearLine
     cursorUpLine 1
     return result
-showImprovingTestResultProgress' erase _ indent_level test_name progress_bar (Improving intermediate rest) = do
+showImprovingTestResultProgress' erase options indent_level test_name progress_bar (Improving intermediate rest) = do
     erase
     putTestHeader indent_level test_name (brackets (text intermediate))
-    putDoc progress_bar
+    unless (hide_progress_bar options) $ putDoc progress_bar
     hFlush stdout
     showImprovingTestResultProgress (cursorUpLine 1 >> clearLine) options indent_level test_name progress_bar rest
 
