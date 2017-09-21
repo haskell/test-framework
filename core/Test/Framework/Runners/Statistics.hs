@@ -13,6 +13,7 @@ import qualified Data.Map as Map
 #if !MIN_VERSION_base(4,8,0)
 import Data.Monoid
 #endif
+import Data.Semigroup as Sem
 
 
 -- | Records a count of the various kinds of test that have been run
@@ -32,9 +33,12 @@ adjustTestCount test_type amount = TestCount . Map.insertWith (+) test_type amou
 testCountTotal :: TestCount -> Int
 testCountTotal = sum . Map.elems . unTestCount
 
+instance Semigroup TestCount where
+    TestCount tcm1 <> TestCount tcm2 = TestCount $ Map.unionWith (+) tcm1 tcm2
+
 instance Monoid TestCount where
     mempty = TestCount $ Map.empty
-    mappend (TestCount tcm1) (TestCount tcm2) = TestCount $ Map.unionWith (+) tcm1 tcm2
+    mappend = (Sem.<>)
 
 minusTestCount :: TestCount -> TestCount -> TestCount
 minusTestCount (TestCount tcm1) (TestCount tcm2) = TestCount $ Map.unionWith (-) tcm1 tcm2
@@ -50,9 +54,12 @@ data TestStatistics = TestStatistics {
         ts_failed_tests :: TestCount
     }
 
+instance Semigroup TestStatistics where
+    TestStatistics tot1 run1 pas1 fai1 <> TestStatistics tot2 run2 pas2 fai2 = TestStatistics (tot1 Sem.<> tot2) (run1 Sem.<> run2) (pas1 Sem.<> pas2) (fai1 Sem.<> fai2)
+
 instance Monoid TestStatistics where
     mempty = TestStatistics mempty mempty mempty mempty
-    mappend (TestStatistics tot1 run1 pas1 fai1) (TestStatistics tot2 run2 pas2 fai2) = TestStatistics (tot1 `mappend` tot2) (run1 `mappend` run2) (pas1 `mappend` pas2) (fai1 `mappend` fai2)
+    mappend = (Sem.<>)
 
 ts_pending_tests :: TestStatistics -> TestCount
 ts_pending_tests ts = ts_total_tests ts `minusTestCount` ts_run_tests ts

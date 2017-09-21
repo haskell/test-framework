@@ -8,6 +8,7 @@ import Test.Framework.Utilities
 import Test.Framework.Runners.TestPattern
 
 import Data.Monoid
+import Data.Semigroup as Sem hiding (Last(..))
 
 data ColorMode = ColorAuto | ColorNever | ColorAlways
 
@@ -24,6 +25,18 @@ data RunnerOptions' f = RunnerOptions {
         ropt_list_only  :: f Bool
     }
 
+instance Semigroup (RunnerOptions' Maybe) where
+    ro1 <> ro2 = RunnerOptions {
+            ropt_threads = getLast (mappendBy (Last . ropt_threads) ro1 ro2),
+            ropt_test_options = mappendBy ropt_test_options ro1 ro2,
+            ropt_test_patterns = mappendBy ropt_test_patterns ro1 ro2,
+            ropt_xml_output = mappendBy ropt_xml_output ro1 ro2,
+            ropt_xml_nested = getLast (mappendBy (Last . ropt_xml_nested) ro1 ro2),
+            ropt_color_mode = getLast (mappendBy (Last . ropt_color_mode) ro1 ro2),
+            ropt_hide_successes = getLast (mappendBy (Last . ropt_hide_successes) ro1 ro2),
+            ropt_list_only      = getLast (mappendBy (Last . ropt_list_only)      ro1 ro2)
+        }
+
 instance Monoid (RunnerOptions' Maybe) where
     mempty = RunnerOptions {
             ropt_threads = Nothing,
@@ -36,13 +49,4 @@ instance Monoid (RunnerOptions' Maybe) where
             ropt_list_only      = Nothing
         }
 
-    mappend ro1 ro2 = RunnerOptions {
-            ropt_threads = getLast (mappendBy (Last . ropt_threads) ro1 ro2),
-            ropt_test_options = mappendBy ropt_test_options ro1 ro2,
-            ropt_test_patterns = mappendBy ropt_test_patterns ro1 ro2,
-            ropt_xml_output = mappendBy ropt_xml_output ro1 ro2,
-            ropt_xml_nested = getLast (mappendBy (Last . ropt_xml_nested) ro1 ro2),
-            ropt_color_mode = getLast (mappendBy (Last . ropt_color_mode) ro1 ro2),
-            ropt_hide_successes = getLast (mappendBy (Last . ropt_hide_successes) ro1 ro2),
-            ropt_list_only      = getLast (mappendBy (Last . ropt_list_only)      ro1 ro2)
-        }
+    mappend = (Sem.<>)

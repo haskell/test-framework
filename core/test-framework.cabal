@@ -80,6 +80,8 @@ Library
         -- workaround https://github.com/haskell/cabal/issues/4443
         if impl(ghc >= 7.2)
                 Default-Extensions: NondecreasingIndentation
+        if !impl(ghc >= 8.0)
+                Build-Depends: semigroups == 0.18.*
 
         Ghc-Options:            -Wall
 
