@@ -5,3 +5,8 @@ packages: ./core
           ./hunit
           ./quickcheck2
           ./example
+
+-- On Debian/Ubuntu you may need the following to workaround an issue in libxml's packaging
+
+-- package libxml
+--     extra-include-dirs: /usr/include/libxml2

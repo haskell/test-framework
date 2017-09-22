@@ -4,6 +4,7 @@ import Test.Framework.Seed
 import Test.Framework.Utilities
 
 import Data.Monoid
+import Data.Semigroup as Sem hiding (Last(..))
 
 
 type TestOptions = TestOptions' Maybe
@@ -23,6 +24,16 @@ data TestOptions' f = TestOptions {
         -- ^ The number of microseconds to run tests for before considering them a failure
     }
 
+instance Sem.Semigroup (TestOptions' Maybe) where
+    to1 <> to2 = TestOptions {
+            topt_seed = getLast (mappendBy (Last . topt_seed) to1 to2),
+            topt_maximum_generated_tests = getLast (mappendBy (Last . topt_maximum_generated_tests) to1 to2),
+            topt_maximum_unsuitable_generated_tests = getLast (mappendBy (Last . topt_maximum_unsuitable_generated_tests) to1 to2),
+            topt_maximum_test_size = getLast (mappendBy (Last . topt_maximum_test_size) to1 to2),
+            topt_maximum_test_depth = getLast (mappendBy (Last . topt_maximum_test_depth) to1 to2),
+            topt_timeout = getLast (mappendBy (Last . topt_timeout) to1 to2)
+        }
+
 instance Monoid (TestOptions' Maybe) where
     mempty = TestOptions {
             topt_seed = Nothing,
@@ -33,11 +44,4 @@ instance Monoid (TestOptions' Maybe) where
             topt_timeout = Nothing
         }
     
-    mappend to1 to2 = TestOptions {
-            topt_seed = getLast (mappendBy (Last . topt_seed) to1 to2),
-            topt_maximum_generated_tests = getLast (mappendBy (Last . topt_maximum_generated_tests) to1 to2),
-            topt_maximum_unsuitable_generated_tests = getLast (mappendBy (Last . topt_maximum_unsuitable_generated_tests) to1 to2),
-            topt_maximum_test_size = getLast (mappendBy (Last . topt_maximum_test_size) to1 to2),
-            topt_maximum_test_depth = getLast (mappendBy (Last . topt_maximum_test_depth) to1 to2),
-            topt_timeout = getLast (mappendBy (Last . topt_timeout) to1 to2)
-        }
+    mappend = (Sem.<>)

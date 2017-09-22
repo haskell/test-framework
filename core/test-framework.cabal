@@ -1,5 +1,5 @@
 Name:                test-framework
-Version:             0.8.1.1
+Version:             0.8.2
 Cabal-Version:       >= 1.10
 Category:            Testing
 Synopsis:            Framework for running and organising tests, with HUnit and QuickCheck support
@@ -17,12 +17,8 @@ Tested-With:         GHC==8.2.1, GHC==8.0.2, GHC==7.10.3, GHC==7.8.4, GHC==7.6.3
 
 Flag Tests
         Description:    Build the tests
-        Default:        False
-        Manual:         True
-
-Flag Base47
-        Description:    Use base-4.7 or later
         Default:        True
+        Manual:         True
 
 Library
         Exposed-Modules:        Test.Framework
@@ -51,20 +47,22 @@ Library
                                 Test.Framework.Runners.XML
                                 Test.Framework.Utilities
 
-        Build-Depends:          ansi-terminal  >= 0.4.0,
-                                ansi-wl-pprint >= 0.5.1,
-                                random         >= 1.0,
-                                containers     >= 0.1,
-                                regex-posix    >= 0.72,
-                                old-locale     >= 1.0,
-                                time           >= 1.1.2 && < 1.9,
-                                xml            >= 1.3.5,
-                                hostname       >= 1.0
+        Build-Depends:          base           >= 4.3    && < 5
+                              , ansi-terminal  >= 0.4.0  && < 0.7
+                              , ansi-wl-pprint >= 0.5.1  && < 0.7
+                              , random         >= 1.0    && < 1.2
+                              , containers     >= 0.1    && < 0.6
+                              , regex-posix    >= 0.72   && < 0.96
+                              , old-locale     >= 1.0    && < 1.1
+                              , time           >= 1.1.2  && < 1.9
+                              , xml            >= 1.3.5  && < 1.4
+                              , hostname       >= 1.0    && < 1.1
 
-        if flag(Base47)
-                Build-Depends:  base >= 4.7 && < 5
-        else
-                Build-Depends:  base >= 4.3 && < 4.7, base-orphans >= 0.1 && < 0.5
+        if !impl(ghc >= 7.8)
+                Build-Depends:  base-orphans   >= 0.1    && < 0.5
+
+        if !impl(ghc >= 8.0)
+                Build-Depends:  semigroups     >= 0.18   && < 0.19
 
         Default-Language:       Haskell2010
         Default-Extensions:     CPP
@@ -80,11 +78,13 @@ Library
         -- workaround https://github.com/haskell/cabal/issues/4443
         if impl(ghc >= 7.2)
                 Default-Extensions: NondecreasingIndentation
-
         Ghc-Options:            -Wall
 
         if impl(ghc)
                 Cpp-Options:            -DCOMPILER_GHC
+
+        if impl(ghc >= 8.0)
+                Ghc-Options: -Wcompat -Wnoncanonical-monad-instances -Wnoncanonical-monadfail-instances
 
 Executable test-framework-tests
         Main-Is:                Test/Framework/Tests.hs
@@ -92,15 +92,23 @@ Executable test-framework-tests
         if !flag(tests)
                 Buildable:              False
         else
-                Build-Depends:          HUnit >= 1.2, QuickCheck >= 2.3 && < 2.5,
-                                        base >= 4.3 && < 5, random >= 1.0, containers >= 0.1,
-                                        ansi-terminal >= 0.4.0, ansi-wl-pprint >= 0.5.1,
-                                        regex-posix >= 0.72,
-                                        old-locale >= 1.0, time >= 1.1.2,
-                                        xml >= 1.3.5, hostname >= 1.0,
-                                        libxml >= 0.1.1, bytestring >= 0.9
+                Build-Depends:          HUnit          >= 1.2
+                                      , QuickCheck     >= 2.3 && < 2.10
+                                      , base           >= 4.3
+                                      , random         >= 1.0
+                                      , containers     >= 0.1
+                                      , ansi-terminal  >= 0.4.0
+                                      , ansi-wl-pprint >= 0.5.1
+                                      , regex-posix    >= 0.72
+                                      , old-locale     >= 1.0
+                                      , time           >= 1.1.2
+                                      , xml            >= 1.3.5
+                                      , hostname       >= 1.0
+                                      , libxml         >= 0.1.1
+                                      , bytestring     >= 0.9
+                                      , semigroups     >= 0.18
 
-                Extensions:             CPP
+                Default-Extensions:     CPP
                                         PatternGuards
                                         ExistentialQuantification
                                         RecursiveDo
