@@ -2,7 +2,8 @@ Name:                test-framework-example
 Version:             0.2.1
 Cabal-Version:       >= 1.10
 Category:            Testing
-Synopsis:            Example testsuite for the test-framework package
+Synopsis:            Example test suite for the test-framework package
+Description:         Example test suite for the @test-framework@ package.
 License:             BSD3
 License-File:        LICENSE
 Author:              Max Bolingbroke <batterseapower@hotmail.com>
