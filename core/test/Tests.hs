@@ -10,7 +10,7 @@ import Test.QuickCheck
 main :: IO ()
 main = do
     _ <- runTestTT $ TestList [
-    	TestList TP.tests,
-    	XT.test
+      TestList TP.tests,
+      XT.test
       ]
     quickCheck XT.property

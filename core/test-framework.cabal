@@ -18,6 +18,7 @@ Tested-With:         GHC==8.4.1, GHC==8.2.2, GHC==8.0.2, GHC==7.10.3, GHC==7.8.4
 Extra-Source-Files: ChangeLog.md
 
 Library
+        hs-source-dirs:         src
         Exposed-Modules:        Test.Framework
                                 Test.Framework.Options
                                 Test.Framework.Providers.API
@@ -84,7 +85,21 @@ Library
                 Ghc-Options: -Wcompat -Wnoncanonical-monad-instances -Wnoncanonical-monadfail-instances
 
 Test-Suite test-framework-tests
-        Main-Is:                Test/Framework/Tests.hs
+        hs-source-dirs:         test src
+        other-modules:          Test.Framework.Tests.Runners.ThreadPool
+                                Test.Framework.Tests.Runners.XMLTests
+
+                                Test.Framework.Core
+                                Test.Framework.Improving
+                                Test.Framework.Options
+                                Test.Framework.Runners.Core
+                                Test.Framework.Runners.Options
+                                Test.Framework.Runners.TestPattern
+                                Test.Framework.Runners.ThreadPool
+                                Test.Framework.Runners.XML.JUnitWriter
+                                Test.Framework.Seed
+                                Test.Framework.Utilities
+        Main-Is:                Tests.hs
         Type:                   exitcode-stdio-1.0
 
         -- Buildable:              False
