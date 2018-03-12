@@ -12,8 +12,9 @@ import Test.QuickCheck.Property as P ( Property )
 
 import Control.Monad
 
-import Data.ByteString.Char8 as BS ( pack )
 import Data.Maybe
+
+import qualified Data.ByteString.UTF8 as UTF8
 
 import qualified Text.XML.Light as XML         ( findAttr, unqual )
 import qualified Text.XML.LibXML.Parser as XML ( parseMemory_ )
@@ -100,7 +101,7 @@ property :: RunDescription -> P.Property
 property = morallyDubiousIOProperty . fmap isJust . parseSerialize
 
 parseSerialize :: RunDescription -> IO (Maybe XML.Document)
-parseSerialize = XML.parseMemory_ . BS.pack . serialize False
+parseSerialize = XML.parseMemory_ . UTF8.fromString . serialize False
 
 -- | Verify that the group names are properly pre-pended to sub-tests.
 test :: Test

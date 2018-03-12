@@ -81,7 +81,10 @@ below, per the licensing conditions of pqc.
 >
 >   import Data.List
 >
->   main = defaultMain tests
+>   import Control.Exception (catch)
+>   import System.Exit (ExitCode)
+>
+>   main = defaultMain tests `Control.Exception.catch` exampleFailures
 >
 >   mainWithOpts = do
 >       -- Test options can also be specified in the code. The TestOptions
@@ -143,7 +146,7 @@ below, per the licensing conditions of pqc.
 >       prop_sort5 xs ys =
 >           (not (null xs)) ==>
 >           (not (null ys)) ==>
->           (head (sort (xs ++ ys)) == max (maximum xs) (maximum ys))
+>           (last (sort (xs ++ ys)) == max (maximum xs) (maximum ys))
 >               where types = (xs :: [Int], ys :: [Int])
 >
 >       prop_sort6 xs ys =
@@ -160,3 +163,10 @@ below, per the licensing conditions of pqc.
 >       test_sort8 = sort [8, 7, 2, 5, 4, 9, 6, 1, 0, 3] @?= [0..9]
 >
 >       test_sort9 = error "This test deliberately contains a user error"
+
+The test suite above fails, as we delibarately left errors there.
+But because the suite is run as part of CI process, we dismiss failure
+exit code with
+
+>   exampleFailures :: ExitCode -> IO ()
+>   exampleFailures _ = return ()
