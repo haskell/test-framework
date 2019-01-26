@@ -13,7 +13,7 @@ Maintainer:          Libraries List <libraries@haskell.org>
 Homepage:            http://haskell.github.io/test-framework/
 Bug-Reports:         https://github.com/haskell/test-framework/issues
 Build-Type:          Simple
-Tested-With:         GHC==8.4.1, GHC==8.2.2, GHC==8.0.2, GHC==7.10.3, GHC==7.8.4, GHC==7.6.3, GHC==7.4.2, GHC==7.2.2, GHC==7.0.4
+Tested-With:         GHC==8.6.3, GHC==8.4.4, GHC==8.2.2, GHC==8.0.2, GHC==7.10.3, GHC==7.8.4, GHC==7.6.3, GHC==7.4.2, GHC==7.2.2, GHC==7.0.4
 
 Extra-Source-Files: ChangeLog.md
 
@@ -46,10 +46,10 @@ Library
                                 Test.Framework.Utilities
 
         Build-Depends:          base           >= 4.3    && < 5
-                              , ansi-terminal  >= 0.4.0  && < 0.9
+                              , ansi-terminal  >= 0.4.0  && < 0.10
                               , ansi-wl-pprint >= 0.5.1  && < 0.7
                               , random         >= 1.0    && < 1.2
-                              , containers     >= 0.1    && < 0.6
+                              , containers     >= 0.1    && < 0.7
                               , regex-posix    >= 0.72   && < 0.96
                               , old-locale     >= 1.0    && < 1.1
                               , time           >= 1.1.2  && < 1.9
@@ -57,7 +57,7 @@ Library
                               , hostname       >= 1.0    && < 1.1
 
         if !impl(ghc >= 7.8)
-                Build-Depends:  base-orphans   >= 0.1    && < 0.5
+                Build-Depends:  base-orphans   >= 0.1    && < 0.9
 
         if !impl(ghc >= 8.0)
                 Build-Depends:  semigroups     >= 0.18   && < 0.19

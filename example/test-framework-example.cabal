@@ -10,7 +10,7 @@ Author:              Max Bolingbroke <batterseapower@hotmail.com>
 Maintainer:          Max Bolingbroke <batterseapower@hotmail.com>
 Homepage:            http://batterseapower.github.com/test-framework/
 Build-Type:          Simple
-Tested-With:         GHC==8.4.1, GHC==8.2.2, GHC==8.0.2, GHC==7.10.3, GHC==7.8.4, GHC==7.6.3, GHC==7.4.2, GHC==7.2.2, GHC==7.0.4
+Tested-With:         GHC==8.6.3, GHC==8.4.4, GHC==8.2.2, GHC==8.0.2, GHC==7.10.3, GHC==7.8.4, GHC==7.6.3, GHC==7.4.2, GHC==7.2.2, GHC==7.0.4
 
 Executable test-framework-example
         default-language:       Haskell2010
