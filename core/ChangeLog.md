@@ -1,3 +1,7 @@
+### next
+
+- Replace `regex-posix` dependency with `regex-tdfa` for better Windows and GHCJS support
+
 ### 0.8.2.0
 
 - Add `Semigroup` instances

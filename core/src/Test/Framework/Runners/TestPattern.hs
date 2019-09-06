@@ -4,8 +4,7 @@ module Test.Framework.Runners.TestPattern (
 
 import Test.Framework.Utilities
 
-import Text.Regex.Posix.Wrap
-import Text.Regex.Posix.String()
+import Text.Regex.TDFA
 
 import Data.List
 
@@ -65,7 +64,7 @@ testPatternMatches test_pattern path = not_maybe $ any (=~ tokens_regex) things_
     path_to_consider | tp_categories_only test_pattern = dropLast 1 path
                      | otherwise                       = path
     tokens_regex = buildTokenRegex (tp_tokens test_pattern)
-    
+
     things_to_match = case tp_match_mode test_pattern of
         -- See if the tokens match any single path component
         TestMatchMode -> path_to_consider
@@ -79,7 +78,7 @@ buildTokenRegex (token:tokens) = concat (firstTokenToRegex token : map tokenToRe
   where
     firstTokenToRegex SlashToken = "^"
     firstTokenToRegex other = tokenToRegex other
-      
+
     tokenToRegex SlashToken = "/"
     tokenToRegex WildcardToken = "[^/]*"
     tokenToRegex DoubleWildcardToken = "*"
