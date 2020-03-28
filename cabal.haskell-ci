@@ -1,0 +1,6 @@
+apt: libxml2-dev
+
+raw-project
+  -- On Debian/Ubuntu you may need the following to workaround an issue in libxml's packaging
+  package libxml
+    extra-include-dirs: /usr/include/libxml2
