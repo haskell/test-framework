@@ -103,7 +103,7 @@ property = morallyDubiousIOProperty . fmap isJust . parseSerialize
 parseSerialize :: RunDescription -> IO (Maybe XML.Document)
 parseSerialize = XML.parseMemory_ . UTF8.fromString . serialize False
 
--- | Verify that the group names are properly pre-pended to sub-tests.
+-- | Verify that the group names are properly prepended to sub-tests.
 test :: Test
 test = TestLabel "Check the composition of group names" $ TestCase $
        XML.findAttr (XML.unqual "classname") x @?= Just "top.g1"

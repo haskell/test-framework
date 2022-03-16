@@ -18,7 +18,7 @@ import Text.XML.Light ( ppTopElement, unqual, unode
 -- | An overall description of the test suite run.  This is currently
 -- styled after the JUnit xml.  It contains records that are not yet
 -- used, however, it provides a sensible structure to populate as we
--- are able, and the serialiazation code behaves as though these are
+-- are able, and the serialization code behaves as though these are
 -- filled.
 data RunDescription = RunDescription {
     errors :: Int -- ^ The number of tests that triggered error

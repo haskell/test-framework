@@ -71,7 +71,7 @@ poolWorker input_chan output_chan = do
             poolWorker input_chan output_chan
 
 -- | Keep grabbing items out of the infinite list of worker outputs until we have
--- recieved word that all of the workers have shut down.  This lets us turn a possibly
+-- received word that all of the workers have shut down.  This lets us turn a possibly
 -- infinite list of outputs into a certainly finite one suitable for use with reorderFrom.
 takeWhileWorkersExist :: Int -> [WorkerEvent token a] -> [(token, a)]
 takeWhileWorkersExist worker_count events
