@@ -151,7 +151,7 @@ defaultMainWithOpts tests ropts = do
         K (Just file) -> XML.produceReport (unK (ropt_xml_nested ropts')) test_statistics' fin_tests >>= writeFile file
         _ -> return ()
 
-    -- Set the error code depending on whether the tests succeded or not
+    -- Set the error code depending on whether the tests succeeded or not
     exitWith $ if ts_no_failures test_statistics'
                then ExitSuccess
                else ExitFailure 1

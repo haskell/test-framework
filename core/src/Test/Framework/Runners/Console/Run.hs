@@ -39,7 +39,7 @@ showRunTestsTop isplain hide_successes running_tests = (if isplain then id else 
     return finished_tests
 
 
--- This code all /really/ sucks.  There must be a better way to seperate out the console-updating
+-- This code all /really/ sucks.  There must be a better way to separate out the console-updating
 -- and the improvement-traversing concerns - but how?
 showRunTest :: Bool -> Bool -> Int -> TestStatistics -> RunningTest -> IO (TestStatistics, FinishedTest)
 showRunTest isplain hide_successes indent_level test_statistics (RunTest name test_type (SomeImproving improving_result)) = do
