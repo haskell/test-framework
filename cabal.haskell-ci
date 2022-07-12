@@ -1,3 +1,5 @@
+branches: master ci*
+
 apt: libxml2-dev
 
 raw-project
