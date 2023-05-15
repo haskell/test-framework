@@ -15,8 +15,9 @@ Bug-Reports:         https://github.com/haskell/test-framework/issues
 Build-Type:          Simple
 
 Tested-With:
-  GHC == 9.4.1
-  GHC == 9.2.3
+  GHC == 9.6.1
+  GHC == 9.4.5
+  GHC == 9.2.7
   GHC == 9.0.2
   GHC == 8.10.7
   GHC == 8.8.4
@@ -62,7 +63,7 @@ Library
                                 Test.Framework.Utilities
 
         Build-Depends:          base           >= 4.3    && < 5
-                              , ansi-terminal  >= 0.4.0  && < 0.12
+                              , ansi-terminal  >= 0.4.0  && < 1.1
                               , ansi-wl-pprint >= 0.5.1  && < 0.7
                               , random         >= 1.0    && < 1.3
                               , containers     >= 0.1    && < 0.7
