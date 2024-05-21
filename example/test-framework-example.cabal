@@ -12,8 +12,9 @@ Homepage:            http://batterseapower.github.com/test-framework/
 Build-Type:          Simple
 
 Tested-With:
-  GHC == 9.8.1
-  GHC == 9.6.4
+  GHC == 9.10.1
+  GHC == 9.8.2
+  GHC == 9.6.5
   GHC == 9.4.8
   GHC == 9.2.8
   GHC == 9.0.2
@@ -41,6 +42,6 @@ Executable test-framework-example
 
         Build-Depends:          base                       >= 3   && < 5
                               , HUnit                      >= 1.2 && < 1.7
-                              , QuickCheck                 >= 2.4 && < 2.15
+                              , QuickCheck                 >= 2.4 && < 2.16
 
         Ghc-Options:            -threaded
