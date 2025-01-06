@@ -20,7 +20,7 @@ import Test.QuickCheck.Test
 #if MIN_VERSION_QuickCheck(2,7,0)
 import Test.QuickCheck.Random (QCGen, mkQCGen)
 #endif
-import System.Random
+import System.Random (randomIO)
 
 import Data.Typeable
 
