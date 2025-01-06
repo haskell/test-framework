@@ -2,7 +2,7 @@ module Test.Framework.Seed where
 
 import Test.Framework.Utilities
 
-import System.Random
+import System.Random (StdGen, mkStdGen, randomIO)
 
 import Data.Char
 
