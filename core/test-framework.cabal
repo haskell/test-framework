@@ -119,7 +119,7 @@ Test-Suite test-framework-tests
         -- Buildable:              False
         Build-Depends:          HUnit          >= 1.2
                               , QuickCheck     >= 2.3 && < 2.16
-                              , base           >= 4.3
+                              , base           >= 4.3 && < 5
                               , random         >= 1.0
                               , containers     >= 0.1
                               , ansi-terminal  >= 0.4.0

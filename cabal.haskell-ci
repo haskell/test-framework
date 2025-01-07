@@ -1,4 +1,4 @@
-branches: master ci*
+branches: master
 
 apt: libxml2-dev
 
