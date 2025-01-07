@@ -22,6 +22,14 @@ import Test.QuickCheck.Random (QCGen, mkQCGen)
 #endif
 import System.Random (randomIO)
 
+#if MIN_VERSION_QuickCheck(2,12,0)
+import qualified Data.Map as M
+import Test.QuickCheck.Text (lpercent)
+#elif MIN_VERSION_QuickCheck(2,10,0)
+import Numeric (showFFloat)
+#endif
+
+import Data.List (intercalate)
 import Data.Typeable
 
 
@@ -44,8 +52,8 @@ data PropertyResult = PropertyResult {
                                                 -- tests previously run if the test times out, hence we need a Maybe here for that case.
     }
 
-data PropertyStatus = PropertyOK                        -- ^ The property is true as far as we could check it
-                    | PropertyArgumentsExhausted        -- ^ The property may be true, but we ran out of arguments to try it out on
+data PropertyStatus = PropertyOK String                 -- ^ The property is true as far as we could check it (with classification details)
+                    | PropertyArgumentsExhausted String -- ^ The property may be true, but we ran out of arguments to try it out on
                     | PropertyFalsifiable String String -- ^ The property was not true. The strings are the reason and the output.
                     | PropertyNoExpectedFailure         -- ^ We expected that a property would fail but it didn't
                     | PropertyTimedOut                  -- ^ The property timed out during execution
@@ -56,8 +64,8 @@ data PropertyStatus = PropertyOK                        -- ^ The property is tru
 instance Show PropertyResult where
     show (PropertyResult { pr_status = status, pr_used_seed = used_seed, pr_tests_run = mb_tests_run })
       = case status of
-            PropertyOK                    -> "OK, passed " ++ tests_run_str ++ " tests"
-            PropertyArgumentsExhausted    -> "Arguments exhausted after " ++ tests_run_str ++ " tests"
+            PropertyOK cs                 -> "OK, passed " ++ tests_run_str ++ " tests" ++ cs
+            PropertyArgumentsExhausted cs -> "Arguments exhausted after " ++ tests_run_str ++ " tests" ++ cs
             PropertyFalsifiable _rsn otpt -> otpt ++ "(used seed " ++ show used_seed ++ ")"
             PropertyNoExpectedFailure     -> "No expected failure with seed " ++ show used_seed ++ ", after " ++ tests_run_str ++ " tests"
             PropertyTimedOut              -> "Timed out after " ++ tests_run_str ++ " tests"
@@ -69,9 +77,9 @@ instance Show PropertyResult where
 
 propertySucceeded :: PropertyResult -> Bool
 propertySucceeded (PropertyResult { pr_status = status, pr_tests_run = mb_n }) = case status of
-  PropertyOK                 -> True
-  PropertyArgumentsExhausted -> maybe False (/= 0) mb_n
-  _                          -> False
+  PropertyOK{}                 -> True
+  PropertyArgumentsExhausted{} -> maybe False (/= 0) mb_n
+  _                            -> False
 
 
 data Property = forall a. Testable a => Property a
@@ -123,10 +131,25 @@ runProperty topts testable = do
                    pr_tests_run = Just (numTests result)
                }
   where
-    toPropertyStatus (Success {})                              = PropertyOK
-    toPropertyStatus (GaveUp {})                               = PropertyArgumentsExhausted
+    toPropertyStatus s@(Success {})                            = PropertyOK (classification s)
+    toPropertyStatus s@(GaveUp {})                             = PropertyArgumentsExhausted (classification s)
     toPropertyStatus (Failure { reason = rsn, output = otpt }) = PropertyFalsifiable rsn otpt
     toPropertyStatus (NoExpectedFailure {})                    = PropertyNoExpectedFailure
 #if MIN_VERSION_QuickCheck(2,8,0) && !MIN_VERSION_QuickCheck(2,12,0)
     toPropertyStatus (InsufficientCoverage _ _ _)              = PropertyInsufficientCoverage
 #endif
+#if MIN_VERSION_QuickCheck(2,12,0)
+    classification s = render_classes (numTests s) (M.toList $ classes s)
+    render_class n (l,k) = lpercent k n ++ " " ++ l
+#else
+    classification s = render_classes (numTests s) (labels s)
+#if MIN_VERSION_QuickCheck(2,10,0)
+    render_class n (l,p) = showFFloat (Just places) p " " ++ l
+      where
+        places = ceiling (logBase 10 (fromIntegral n) - 2 :: Double) `max` 0
+#else
+    render_class _ (l,p) = shows p " " ++ l
+#endif
+#endif
+    render_classes _ [] = ""
+    render_classes n cs = " (" ++ intercalate (", ") (map (render_class n) cs) ++ ")"
