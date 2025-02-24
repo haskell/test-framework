@@ -6,11 +6,8 @@ module Test.Framework.Runners.Console.Table (
 
 import Test.Framework.Utilities
 
-#if MIN_VERSION_ansi_wl_pprint(0,6,6)
-import Text.PrettyPrint.ANSI.Leijen hiding (column, columns)
-#else
-import Text.PrettyPrint.ANSI.Leijen hiding (column)
-#endif
+import Text.PrettyPrint.ANSI.Leijen
+    ( char, empty, fill, hcat, line, text, Doc )
 
 data Cell = TextCell Doc
           | SeperatorCell
@@ -65,7 +62,7 @@ renderFirstColumnCell column_width (Column cells) _ = case cells of
     []                    -> text $ replicate (column_width + 2) ' '
     (SeperatorCell:_)     -> text $ replicate (column_width + 2) '-'
     (TextCell contents:_) -> char ' ' <> fill column_width contents <> char ' '
-renderFirstColumnCell _ SeperatorColumn either_side_seperator 
+renderFirstColumnCell _ SeperatorColumn either_side_seperator
   = if either_side_seperator then char '+' else char '|'
 
 columnFinished :: Column -> Bool

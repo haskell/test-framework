@@ -1,6 +1,6 @@
+Cabal-Version:       1.18
 Name:                test-framework
-Version:             0.8.2.0
-Cabal-Version:       >= 1.10
+Version:             0.8.2.1
 Category:            Testing
 Synopsis:            Framework for running and organising tests, with HUnit and QuickCheck support
 Description:         Allows tests such as QuickCheck properties and HUnit test cases to be assembled into test groups, run in
@@ -9,7 +9,7 @@ Description:         Allows tests such as QuickCheck properties and HUnit test c
 License:             BSD3
 License-File:        LICENSE
 Author:              Max Bolingbroke <batterseapower@hotmail.com>
-Maintainer:          Libraries List <libraries@haskell.org>
+Maintainer:          Andreas Abel
 Homepage:            http://haskell.github.io/test-framework/
 Bug-Reports:         https://github.com/haskell/test-framework/issues
 Build-Type:          Simple
@@ -29,7 +29,9 @@ Tested-With:
   GHC == 8.2.2
   GHC == 8.0.2
 
-Extra-Source-Files: ChangeLog.md
+Extra-Doc-Files:
+  ChangeLog.md
+  README.md
 
 Library
         hs-source-dirs:         src
@@ -59,22 +61,16 @@ Library
                                 Test.Framework.Runners.XML
                                 Test.Framework.Utilities
 
-        Build-Depends:          base           >= 4.3    && < 5
+        Build-Depends:          base           >= 4.9    && < 5
                               , ansi-terminal  >= 0.4.0  && < 1.2
-                              , ansi-wl-pprint >= 0.5.1  && < 1.1
-                              , random         >= 1.0    && < 1.4
+                              , ansi-wl-pprint >= 0.6.7  && < 1.1
+                              , random         >= 1.1    && < 1.4
                               , containers     >= 0.1    && < 0.8
                               , regex-posix    >= 0.72   && < 0.97
                               , old-locale     >= 1.0    && < 1.1
-                              , time           >= 1.1.2  && < 1.15
+                              , time           >= 1.6    && < 1.15
                               , xml            >= 1.3.5  && < 1.4
                               , hostname       >= 1.0    && < 1.1
-
-        if !impl(ghc >= 7.8)
-                Build-Depends:  base-orphans   >= 0.1    && < 0.9
-
-        if !impl(ghc >= 8.0)
-                Build-Depends:  semigroups     >= 0.18   && < 0.20
 
         Default-Language:       Haskell2010
         Default-Extensions:     CPP
@@ -86,17 +82,17 @@ Library
                                 TypeOperators
                                 FunctionalDependencies
                                 MultiParamTypeClasses
+                                NondecreasingIndentation
+                                  -- workaround https://github.com/haskell/cabal/issues/4443
 
-        -- workaround https://github.com/haskell/cabal/issues/4443
-        if impl(ghc >= 7.2)
-                Default-Extensions: NondecreasingIndentation
         Ghc-Options:            -Wall
+                                -Wcompat
+                                -Wnoncanonical-monad-instances
+                                -Wnoncanonical-monadfail-instances
 
         if impl(ghc)
-                Cpp-Options:            -DCOMPILER_GHC
+                Cpp-Options:    -DCOMPILER_GHC
 
-        if impl(ghc >= 8.0)
-                Ghc-Options: -Wcompat -Wnoncanonical-monad-instances -Wnoncanonical-monadfail-instances
 
 Test-Suite test-framework-tests
         hs-source-dirs:         test src
@@ -116,17 +112,19 @@ Test-Suite test-framework-tests
         Main-Is:                Tests.hs
         Type:                   exitcode-stdio-1.0
 
+        -- Doe to libxml dependency, the testsuite is not buildable on e.g. MacOS
         -- Buildable:              False
-        Build-Depends:          HUnit          >= 1.2
-                              , QuickCheck     >= 2.3 && < 2.16
-                              , base           >= 4.3 && < 5
-                              , random         >= 1.0
+
+        Build-Depends:          HUnit          >= 1.5.0.0
+                              , QuickCheck     >= 2.9.2   && < 2.16
+                              , base           >= 4.9     && < 5
+                              , random         >= 1.1
                               , containers     >= 0.1
                               , ansi-terminal  >= 0.4.0
-                              , ansi-wl-pprint >= 0.5.1
+                              , ansi-wl-pprint >= 0.6.7
                               , regex-posix    >= 0.72
                               , old-locale     >= 1.0
-                              , time           >= 1.1.2
+                              , time           >= 1.6
                               , xml            >= 1.3.5
                               , hostname       >= 1.0
                               , libxml         >= 0.1.1
@@ -144,16 +142,14 @@ Test-Suite test-framework-tests
                                 TypeOperators
                                 FunctionalDependencies
                                 MultiParamTypeClasses
-
-        if impl(ghc >= 7.2)
-            Default-Extensions: NondecreasingIndentation
+                                NondecreasingIndentation
 
         Cpp-Options:            -DTEST
 
         Ghc-Options:            -Wall -threaded
 
         if impl(ghc)
-                Cpp-Options:            -DCOMPILER_GHC
+                Cpp-Options:    -DCOMPILER_GHC
 
 Source-Repository head
   Type:     git

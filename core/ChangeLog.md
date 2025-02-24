@@ -1,3 +1,10 @@
+#### 0.8.2.1
+
+- Support `random-1.3`
+- Drop support for GHC 7
+- Drop support for dependency versions that predate Stackage LTS 9.21
+- Tested building with GHC 8.0 - 9.12.1
+
 ### 0.8.2.0
 
 - Add `Semigroup` instances

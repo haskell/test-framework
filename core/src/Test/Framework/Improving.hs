@@ -5,10 +5,11 @@ module Test.Framework.Improving (
     ) where
 
 import Control.Concurrent
+    ( yield, getChanContents, newChan, writeChan, Chan )
 import Control.Monad
 import Control.Applicative as App
 
-import System.Timeout
+import System.Timeout ( timeout )
 
 
 data i :~> f = Finished f

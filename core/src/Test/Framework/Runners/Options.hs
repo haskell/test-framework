@@ -7,8 +7,8 @@ import Test.Framework.Options
 import Test.Framework.Utilities
 import Test.Framework.Runners.TestPattern
 
-import Data.Monoid
-import Data.Semigroup as Sem hiding (Last(..))
+import Data.Monoid ( Last(Last, getLast) )
+import Data.Semigroup as Sem ( Semigroup((<>)) )
 
 data ColorMode = ColorAuto | ColorNever | ColorAlways
 

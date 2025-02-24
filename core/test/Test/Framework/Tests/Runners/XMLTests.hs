@@ -20,15 +20,7 @@ import qualified Text.XML.Light as XML         ( findAttr, unqual )
 import qualified Text.XML.LibXML.Parser as XML ( parseMemory_ )
 import qualified Text.XML.LibXML.Types as XML  ( Document )
 
-
--- #ifdef MIN_VERSION_QuickCheck(2, 4, 0)
 import Test.QuickCheck.Property as P (morallyDubiousIOProperty)
--- #else
--- import qualified Test.QuickCheck.Property as P (succeeded, failed, liftIOResult)
-
--- morallyDubiousIOProperty :: IO Bool -> Property
--- morallyDubiousIOProperty it = P.liftIOResult $ fmap (\err -> if err then P.failed else P.succeeded) it
--- #endif
 
 -- | `Arbitrary` instance for `TestResult` generation.
 instance Arbitrary FinishedTest where

@@ -3,10 +3,7 @@ module Test.Framework.Utilities where
 import Control.Arrow (first, second)
 
 import Data.Function (on)
-import Data.Maybe
-#if !MIN_VERSION_base(4,8,0)
-import Data.Monoid
-#endif
+import Data.Maybe ( fromMaybe, listToMaybe )
 import Data.List (intercalate)
 
 

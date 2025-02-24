@@ -17,16 +17,15 @@ import Test.Framework.Utilities
 
 import Control.Monad (when)
 import System.Console.GetOpt
-import System.Environment
+    ( getOpt,
+      usageInfo,
+      ArgDescr(NoArg, ReqArg),
+      ArgOrder(Permute),
+      OptDescr(..) )
+import System.Environment ( getArgs, getProgName )
 import System.Exit
-import System.IO
-
-#if !MIN_VERSION_base(4,8,0)
-import Data.Monoid
-#endif
-#if !(MIN_VERSION_base(4,7,0))
-import Data.Orphans ()
-#endif
+    ( exitSuccess, exitWith, ExitCode(ExitFailure, ExitSuccess) )
+import System.IO ( hIsTerminalDevice, hPutStrLn, stderr, stdout )
 
 -- | @Nothing@ signifies that usage information should be displayed.
 -- @Just@ simply gives us the contribution to overall options by the command line option.

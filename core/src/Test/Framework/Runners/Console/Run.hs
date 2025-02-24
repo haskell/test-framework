@@ -13,14 +13,20 @@ import Test.Framework.Runners.Statistics
 import Test.Framework.Runners.TimedConsumption
 import Test.Framework.Utilities
 
-import System.Console.ANSI
-import System.IO
+import System.Console.ANSI ( clearLine, cursorUpLine )
+import System.IO ( hFlush, stdout )
 
 import Text.PrettyPrint.ANSI.Leijen
-
-#if !MIN_VERSION_base(4,8,0)
-import Data.Monoid (mempty)
-#endif
+    ( (<+>),
+      brackets,
+      char,
+      empty,
+      indent,
+      linebreak,
+      plain,
+      putDoc,
+      text,
+      Doc )
 
 import Control.Arrow (second, (&&&))
 import Control.Monad (unless)
@@ -31,11 +37,11 @@ showRunTestsTop isplain hide_successes running_tests = (if isplain then id else 
     -- Show those test results to the user as we get them. Gather statistics on the fly for a progress bar
     let test_statistics = initialTestStatistics (totalRunTestsList running_tests)
     (test_statistics', finished_tests) <- showRunTests isplain hide_successes 0 test_statistics running_tests
-    
+
     -- Show the final statistics
     putStrLn ""
     putDoc $ possiblyPlain isplain $ showFinalTestStatistics test_statistics'
-    
+
     return finished_tests
 
 
@@ -74,7 +80,7 @@ showImprovingTestResult isplain hide_successes indent_level test_name progress_b
     unless (success && hide_successes) $ do
         let (result_doc, extra_doc) | success   = (brackets $ colorPass (text result), empty)
                                     | otherwise = (brackets (colorFail (text "Failed")), text result <> linebreak)
-        
+
         -- Output the final test status and a trailing newline
         putTestHeader indent_level test_name (possiblyPlain isplain result_doc)
         -- Output any extra information that may be required, e.g. to show failure reason
@@ -97,7 +103,7 @@ showImprovingTestResultProgress erase indent_level test_name progress_bar improv
 showImprovingTestResultProgress' :: IO () -> Int -> String -> Doc -> (String :~> (String, Bool)) -> IO (String, Bool)
 showImprovingTestResultProgress' erase _ _ _ (Finished result) = do
     erase
-    -- There may still be a progress bar on the line below the final test result, so 
+    -- There may still be a progress bar on the line below the final test result, so
     -- remove it as a precautionary measure in case this is the last test in a group
     -- and hence it will not be erased in the normal course of test display.
     putStrLn ""

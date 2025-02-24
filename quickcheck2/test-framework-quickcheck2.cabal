@@ -1,13 +1,13 @@
-Cabal-Version:       >= 1.10
+Cabal-Version:       1.18
 Name:                test-framework-quickcheck2
-Version:             0.3.0.5
+Version:             0.3.0.6
 
 Category:            Testing
 Synopsis:            QuickCheck-2 support for the test-framework package.
 License:             BSD3
 License-File:        LICENSE
 Author:              Max Bolingbroke <batterseapower@hotmail.com>
-Maintainer:          Haskell Libraries <libraries@haskell.org>
+Maintainer:          Andreas Abel
 Homepage:            http://haskell.github.io/test-framework/
 Bug-Reports:         https://github.com/haskell/test-framework/issues
 Build-Type:          Simple
@@ -28,7 +28,9 @@ Tested-With:
   GHC == 8.2.2
   GHC == 8.0.2
 
-extra-source-files:  ChangeLog.md
+extra-doc-files:
+  ChangeLog.md
+  README.md
 
 Library
         Default-Language:       Haskell2010
@@ -42,8 +44,8 @@ Library
         Exposed-Modules:        Test.Framework.Providers.QuickCheck2
 
         Build-Depends:          test-framework        == 0.8.*
-                              , QuickCheck            >= 2.4    && < 2.16
-                              , base                  >= 4.3    && < 5
+                              , QuickCheck            >= 2.9.2  && < 2.16
+                              , base                  >= 4.9    && < 5
                               , extensible-exceptions >= 0.1.1  && < 0.2.0
                               , random                >= 1      && < 1.4
 
