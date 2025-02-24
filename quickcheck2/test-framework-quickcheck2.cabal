@@ -28,7 +28,9 @@ Tested-With:
   GHC == 8.2.2
   GHC == 8.0.2
 
-extra-doc-files:  ChangeLog.md
+extra-doc-files:
+  ChangeLog.md
+  README.md
 
 Library
         Default-Language:       Haskell2010

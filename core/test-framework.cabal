@@ -29,7 +29,9 @@ Tested-With:
   GHC == 8.2.2
   GHC == 8.0.2
 
-Extra-Doc-Files: ChangeLog.md
+Extra-Doc-Files:
+  ChangeLog.md
+  README.md
 
 Library
         hs-source-dirs:         src
