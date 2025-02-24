@@ -21,13 +21,6 @@ import System.Environment
 import System.Exit
 import System.IO
 
-#if !MIN_VERSION_base(4,8,0)
-import Data.Monoid
-#endif
-#if !(MIN_VERSION_base(4,7,0))
-import Data.Orphans ()
-#endif
-
 -- | @Nothing@ signifies that usage information should be displayed.
 -- @Just@ simply gives us the contribution to overall options by the command line option.
 type SuppliedRunnerOptions = Maybe RunnerOptions

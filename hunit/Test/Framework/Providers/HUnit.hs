@@ -75,12 +75,6 @@ myPerformTestCase :: Assertion -> IO TestCaseResult
 myPerformTestCase assertion = do
     result <- performTestCase assertion
     return $ case result of
-#if MIN_VERSION_HUnit(1,3,0)
         Success               -> TestCasePassed
         Failure _loc message  -> TestCaseFailed message
         Error   _loc message  -> TestCaseError message
-#else
-        Nothing               -> TestCasePassed
-        Just (True, message)  -> TestCaseFailed message
-        Just (False, message) -> TestCaseError message
-#endif

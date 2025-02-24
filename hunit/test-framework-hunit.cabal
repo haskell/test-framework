@@ -1,12 +1,12 @@
+Cabal-Version:       1.18
 Name:                test-framework-hunit
 Version:             0.3.0.2
-Cabal-Version:       >= 1.10
 Category:            Testing
 Synopsis:            HUnit support for the test-framework package.
 License:             BSD3
 License-File:        LICENSE
 Author:              Max Bolingbroke <batterseapower@hotmail.com>
-Maintainer:          Haskell Libraries <libraries@haskell.org>
+Maintainer:          Andreas Abel
 Homepage:            http://haskell.github.io/test-framework/
 Bug-Reports:         https://github.com/haskell/test-framework/issues
 Build-Type:          Simple
@@ -35,9 +35,9 @@ Library
     Exposed-Modules:        Test.Framework.Providers.HUnit
 
     Build-Depends:          test-framework        == 0.8.*
-                          , base                  >= 4.3   && < 5
-                          , HUnit                 >= 1.2   && < 1.7
-                          , extensible-exceptions >= 0.1.1 && < 0.2.0
+                          , base                  >= 4.9      && < 5
+                          , HUnit                 >= 1.5.0.0  && < 1.7
+                          , extensible-exceptions >= 0.1.1    && < 0.2.0
 
     Ghc-Options:            -Wall
 

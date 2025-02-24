@@ -1,3 +1,10 @@
+## 0.3.0.6
+
+- Support `random-1.3`
+- Drop support for GHC 7
+- Drop support for dependency versions that predate Stackage LTS 9.21
+- Tested building with GHC 8.0 - 9.12.1
+
 ## 0.3.0.5
 
 - Add support for `QuickCheck-2.12`

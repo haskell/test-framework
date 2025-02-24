@@ -17,9 +17,7 @@ import Test.Framework.Providers.API
 import Test.QuickCheck.Property (Testable, Callback(PostTest), CallbackKind(NotCounterexample), callback)
 import Test.QuickCheck.State (numSuccessTests)
 import Test.QuickCheck.Test
-#if MIN_VERSION_QuickCheck(2,7,0)
 import Test.QuickCheck.Random (QCGen, mkQCGen)
-#endif
 import System.Random (randomIO)
 
 import Data.Typeable
@@ -49,7 +47,7 @@ data PropertyStatus = PropertyOK                        -- ^ The property is tru
                     | PropertyFalsifiable String String -- ^ The property was not true. The strings are the reason and the output.
                     | PropertyNoExpectedFailure         -- ^ We expected that a property would fail but it didn't
                     | PropertyTimedOut                  -- ^ The property timed out during execution
-#if MIN_VERSION_QuickCheck(2,8,0) && !MIN_VERSION_QuickCheck(2,12,0)
+#if !MIN_VERSION_QuickCheck(2,12,0)
                     | PropertyInsufficientCoverage      -- ^ The tests passed but a use of 'cover' had insufficient coverage.
 #endif
 
@@ -61,7 +59,7 @@ instance Show PropertyResult where
             PropertyFalsifiable _rsn otpt -> otpt ++ "(used seed " ++ show used_seed ++ ")"
             PropertyNoExpectedFailure     -> "No expected failure with seed " ++ show used_seed ++ ", after " ++ tests_run_str ++ " tests"
             PropertyTimedOut              -> "Timed out after " ++ tests_run_str ++ " tests"
-#if MIN_VERSION_QuickCheck(2,8,0) && !MIN_VERSION_QuickCheck(2,12,0)
+#if !MIN_VERSION_QuickCheck(2,12,0)
             PropertyInsufficientCoverage  -> "Insufficient coverage after " ++ tests_run_str ++ " tests"
 #endif
       where
@@ -81,20 +79,11 @@ instance Testlike PropertyTestCount PropertyResult Property where
     runTest topts (Property testable) = runProperty topts testable
     testTypeName _ = "Properties"
 
-#if MIN_VERSION_QuickCheck(2,7,0)
-
 newSeededQCGen :: Seed -> IO (QCGen, Int)
 newSeededQCGen (FixedSeed seed) = return $ (mkQCGen seed, seed)
 newSeededQCGen RandomSeed = do
   seed <- randomIO
   return (mkQCGen seed, seed)
-
-#else
-
-newSeededQCGen :: Seed -> IO (StdGen, Int)
-newSeededQCGen = newSeededStdGen
-
-#endif
 
 runProperty :: Testable a => CompleteTestOptions -> a -> IO (PropertyTestCount :~> PropertyResult, IO ())
 runProperty topts testable = do
@@ -103,11 +92,7 @@ runProperty topts testable = do
         max_discard = unK $ topt_maximum_unsuitable_generated_tests topts
         args = stdArgs { replay = Just (gen, 0) -- NB: the 0 is the saved size. Defaults to 0 if you supply "Nothing" for "replay".
                        , maxSuccess = max_success
-#if MIN_VERSION_QuickCheck(2,5,0)
                        , maxDiscardRatio = (max_discard `div` max_success) + 1
-#else
-                       , maxDiscard = max_discard
-#endif
                        , maxSize = unK $ topt_maximum_test_size topts
                        , chatty = False }
     -- FIXME: yield gradual improvement after each test
@@ -127,6 +112,6 @@ runProperty topts testable = do
     toPropertyStatus (GaveUp {})                               = PropertyArgumentsExhausted
     toPropertyStatus (Failure { reason = rsn, output = otpt }) = PropertyFalsifiable rsn otpt
     toPropertyStatus (NoExpectedFailure {})                    = PropertyNoExpectedFailure
-#if MIN_VERSION_QuickCheck(2,8,0) && !MIN_VERSION_QuickCheck(2,12,0)
+#if !MIN_VERSION_QuickCheck(2,12,0)
     toPropertyStatus (InsufficientCoverage _ _ _)              = PropertyInsufficientCoverage
 #endif
