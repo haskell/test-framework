@@ -1,6 +1,6 @@
 module Test.Framework.Runners.Console.Colors where
 
-import Text.PrettyPrint.ANSI.Leijen
+import Text.PrettyPrint.ANSI.Leijen ( green, red, Doc )
 
 
 colorFail, colorPass :: Doc -> Doc

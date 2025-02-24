@@ -6,9 +6,9 @@ import Test.Framework.Runners.Statistics
 import Test.Framework.Runners.Console.Colors
 import Test.Framework.Runners.Console.Table
 
-import Text.PrettyPrint.ANSI.Leijen
+import Text.PrettyPrint.ANSI.Leijen ( empty, text, Doc )
 
-import Data.List
+import Data.List ( sort )
 
 
 -- | Displays statistics as a string something like this:
@@ -23,14 +23,14 @@ showFinalTestStatistics :: TestStatistics -> Doc
 showFinalTestStatistics ts = renderTable $ [Column label_column] ++ (map Column test_type_columns) ++ [Column total_column]
   where
     test_types = sort $ testCountTestTypes (ts_total_tests ts)
-    
+
     label_column      = [TextCell empty,              TextCell (text "Passed"),                        TextCell (text "Failed"),                  TextCell (text "Total")]
     total_column      = [TextCell (text "Total"),     testStatusTotal colorPass ts_passed_tests,       testStatusTotal colorFail ts_failed_tests, testStatusTotal (colorPassOrFail (ts_no_failures ts)) ts_total_tests]
     test_type_columns = [ [TextCell (text test_type), testStat colorPass (countTests ts_passed_tests), testStat colorFail failures,               testStat (colorPassOrFail (failures <= 0)) (countTests ts_total_tests)]
                         | test_type <- test_types
                         , let countTests = testCountForType test_type . ($ ts)
                               failures   = countTests ts_failed_tests ]
-    
+
     testStatusTotal color status_accessor = TextCell (coloredNumber color (testCountTotal (status_accessor ts)))
     testStat color number = TextCell (coloredNumber color number)
 

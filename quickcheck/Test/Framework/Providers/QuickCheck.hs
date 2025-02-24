@@ -107,6 +107,6 @@ myTests topts gen rnd0 ntest nfail stamps
   where
     result       = generate (configSize defaultConfig ntest) rnd2 gen
     (rnd1, rnd2) = split rnd0
-    
+
     -- Reduce a Result to RNF before we poke at it in order to uncover hidden exceptions
     rnfResult r = rnf (ok r) `seq` rnf (stamp r) `seq` rnf (arguments r)

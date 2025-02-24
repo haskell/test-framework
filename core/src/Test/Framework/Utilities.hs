@@ -3,7 +3,7 @@ module Test.Framework.Utilities where
 import Control.Arrow (first, second)
 
 import Data.Function (on)
-import Data.Maybe
+import Data.Maybe ( fromMaybe, listToMaybe )
 import Data.List (intercalate)
 
 

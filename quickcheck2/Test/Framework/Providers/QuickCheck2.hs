@@ -20,7 +20,7 @@ import Test.QuickCheck.Test
 import Test.QuickCheck.Random (QCGen, mkQCGen)
 import System.Random (randomIO)
 
-import Data.Typeable
+import Data.Typeable (Typeable)
 
 
 -- | Create a 'Test' for a QuickCheck2 'Testable' property

@@ -13,10 +13,13 @@ import Test.Framework.Runners.Statistics
 import Test.Framework.Runners.TimedConsumption
 import Test.Framework.Utilities
 
-import System.Console.ANSI
-import System.IO
+import System.Console.ANSI ( clearLine, cursorUpLine )
+import System.IO ( hFlush, stdout )
 
 import Text.PrettyPrint.ANSI.Leijen
+    ( (<>), (<+>),
+      brackets, char, empty, indent, linebreak, plain, putDoc, text,
+      Doc )
 
 import Control.Arrow (second, (&&&))
 import Control.Monad (unless)

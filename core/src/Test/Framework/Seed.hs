@@ -4,7 +4,7 @@ import Test.Framework.Utilities
 
 import System.Random (StdGen, mkStdGen, randomIO)
 
-import Data.Char
+import Data.Char ( toLower )
 
 
 data Seed = FixedSeed Int

@@ -10,9 +10,9 @@ import Test.HUnit.Base               ( Test(..), (@?=) )
 import Test.QuickCheck               ( Arbitrary, sized, Gen, oneof, listOf, arbitrary )
 import Test.QuickCheck.Property as P ( Property )
 
-import Control.Monad
+import Control.Monad ( ap, liftM2, liftM3 )
 
-import Data.Maybe
+import Data.Maybe ( isJust )
 
 import qualified Data.ByteString.UTF8 as UTF8
 

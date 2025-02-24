@@ -12,11 +12,11 @@ import Test.Framework.Runners.ThreadPool
 import Test.Framework.Seed
 import Test.Framework.Utilities
 
-import Control.Concurrent.MVar
+import Control.Concurrent.MVar ( newEmptyMVar, putMVar, takeMVar )
 import Control.Exception (mask, finally, onException)
-import Control.Monad
-import Data.Maybe
-import Data.Typeable
+import Control.Monad ( liftM, forM )
+import Data.Maybe ( catMaybes )
+import Data.Typeable ( Typeable )
 
 
 -- | A test that has been executed or is in the process of execution

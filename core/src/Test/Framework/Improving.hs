@@ -5,10 +5,10 @@ module Test.Framework.Improving (
     ) where
 
 import Control.Concurrent
-import Control.Monad
-import Control.Applicative as App
+    ( yield, getChanContents, newChan, writeChan, Chan )
+import Control.Monad (ap, liftM)
 
-import System.Timeout
+import System.Timeout ( timeout )
 
 
 data i :~> f = Finished f
@@ -41,7 +41,7 @@ instance Applicative (ImprovingIO i f) where
     (<*>) = ap
 
 instance Monad (ImprovingIO i f) where
-    return = App.pure
+    return = pure
     ma >>= f = IIO $ \chan -> do
                     a <- unIIO ma chan
                     unIIO (f a) chan

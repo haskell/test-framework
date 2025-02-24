@@ -2,13 +2,11 @@ module Test.Framework.Tests.Runners.ThreadPool (tests) where
 
 import Test.Framework.Runners.ThreadPool
 
-import Test.HUnit
+import Test.HUnit ( (@=?), Test(TestCase, TestLabel), Assertion )
 
-import System.Random
+import System.Random ( getStdGen, Random(randomRs) )
 
-import Control.Concurrent
-
-import Prelude hiding (catch)
+import Control.Concurrent ( threadDelay )
 
 
 tests :: [Test]

@@ -13,7 +13,7 @@ import Test.Framework.Providers.API
 import qualified Test.HUnit.Base
 import Test.HUnit.Lang
 
-import Data.Typeable
+import Data.Typeable (Typeable)
 
 -- | Create a 'Test' for a HUnit 'Assertion'
 testCase :: TestName -> Assertion -> Test

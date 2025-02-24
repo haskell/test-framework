@@ -79,7 +79,7 @@ below, per the licensing conditions of pqc.
 >   import Test.QuickCheck
 >   import Test.HUnit
 >
->   import Data.List
+>   import Data.List (sort, sortBy)
 >
 >   import Control.Exception (catch)
 >   import System.Exit (ExitCode)
