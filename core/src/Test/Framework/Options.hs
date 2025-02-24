@@ -3,8 +3,8 @@ module Test.Framework.Options where
 import Test.Framework.Seed
 import Test.Framework.Utilities
 
-import Data.Monoid
-import Data.Semigroup as Sem hiding (Last(..))
+import Data.Monoid ( Last(Last, getLast) )
+import Data.Semigroup as Sem ( Semigroup((<>)) )
 
 
 type TestOptions = TestOptions' Maybe
@@ -43,5 +43,5 @@ instance Monoid (TestOptions' Maybe) where
             topt_maximum_test_depth = Nothing,
             topt_timeout = Nothing
         }
-    
+
     mappend = (Sem.<>)

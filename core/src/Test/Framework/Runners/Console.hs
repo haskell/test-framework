@@ -17,9 +17,15 @@ import Test.Framework.Utilities
 
 import Control.Monad (when)
 import System.Console.GetOpt
-import System.Environment
+    ( getOpt,
+      usageInfo,
+      ArgDescr(NoArg, ReqArg),
+      ArgOrder(Permute),
+      OptDescr(..) )
+import System.Environment ( getArgs, getProgName )
 import System.Exit
-import System.IO
+    ( exitSuccess, exitWith, ExitCode(ExitFailure, ExitSuccess) )
+import System.IO ( hIsTerminalDevice, hPutStrLn, stderr, stdout )
 
 -- | @Nothing@ signifies that usage information should be displayed.
 -- @Just@ simply gives us the contribution to overall options by the command line option.

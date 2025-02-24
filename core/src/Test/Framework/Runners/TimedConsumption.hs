@@ -4,7 +4,7 @@ module Test.Framework.Runners.TimedConsumption (
 
 import Test.Framework.Utilities
 
-import System.CPUTime
+import System.CPUTime ( getCPUTime )
 
 
 -- | Evaluates the given list for the given number of microseconds. After the time limit

@@ -2,7 +2,7 @@ module Test.Framework.Runners.Console.ProgressBar (
         Progress(..), progressBar
     ) where
 
-import Text.PrettyPrint.ANSI.Leijen hiding (width)
+import Text.PrettyPrint.ANSI.Leijen ( char, text, Doc )
 
 
 data Progress = Progress Int Int

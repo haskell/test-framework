@@ -10,7 +10,7 @@ import Test.Framework.Runners.Core
 
 import Data.Map (Map)
 import qualified Data.Map as Map
-import Data.Semigroup as Sem
+import Data.Semigroup as Sem ( Semigroup((<>)) )
 
 
 -- | Records a count of the various kinds of test that have been run

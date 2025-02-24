@@ -5,8 +5,8 @@ import Test.Framework.Improving
 import Test.Framework.Options
 
 import Control.Arrow (first, second)
-import Control.Concurrent.MVar
-import Data.Typeable
+import Control.Concurrent.MVar ( withMVar, newMVar, MVar )
+import Data.Typeable ( Typeable )
 
 
 -- | Something like the result of a test: works in concert with 'Testlike'.

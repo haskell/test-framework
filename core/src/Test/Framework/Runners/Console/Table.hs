@@ -6,7 +6,8 @@ module Test.Framework.Runners.Console.Table (
 
 import Test.Framework.Utilities
 
-import Text.PrettyPrint.ANSI.Leijen hiding (column, columns)
+import Text.PrettyPrint.ANSI.Leijen
+    ( char, empty, fill, hcat, line, text, Doc )
 
 data Cell = TextCell Doc
           | SeperatorCell
