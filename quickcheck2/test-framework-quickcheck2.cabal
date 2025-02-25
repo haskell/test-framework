@@ -1,14 +1,13 @@
 Cabal-Version:       1.18
 Name:                test-framework-quickcheck2
 Version:             0.3.0.6
-
 Category:            Testing
 Synopsis:            QuickCheck-2 support for the test-framework package.
 License:             BSD3
 License-File:        LICENSE
 Author:              Max Bolingbroke <batterseapower@hotmail.com>
 Maintainer:          Andreas Abel
-Homepage:            https://github.com/haskell/test-framework
+Homepage:            https://github.com/haskell/test-framework#readme
 Bug-Reports:         https://github.com/haskell/test-framework/issues
 Build-Type:          Simple
 Description:         Allows @QuickCheck-2@ properties to be used with the </package/test-framework test-framework package>.
