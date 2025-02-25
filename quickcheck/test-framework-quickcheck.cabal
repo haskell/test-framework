@@ -7,7 +7,7 @@ License:             BSD3
 License-File:        LICENSE
 Author:              Max Bolingbroke <batterseapower@hotmail.com>
 Maintainer:          Max Bolingbroke <batterseapower@hotmail.com>
-Homepage:            http://batterseapower.github.com/test-framework/
+Homepage:            https://github.com/haskell/test-framework
 Bug-Reports:         https://github.com/haskell/test-framework/issues
 Build-Type:          Simple
 

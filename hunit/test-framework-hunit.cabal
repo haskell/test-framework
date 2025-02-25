@@ -7,7 +7,7 @@ License:             BSD3
 License-File:        LICENSE
 Author:              Max Bolingbroke <batterseapower@hotmail.com>
 Maintainer:          Andreas Abel
-Homepage:            http://haskell.github.io/test-framework/
+Homepage:            https://github.com/haskell/test-frameworky
 Bug-Reports:         https://github.com/haskell/test-framework/issues
 Build-Type:          Simple
 Description:         @HUnit@ support for the @test-framework@ package.
