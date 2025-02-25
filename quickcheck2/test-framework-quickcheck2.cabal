@@ -50,6 +50,8 @@ Library
                               , random                >= 1      && < 1.4
 
         Ghc-Options:            -Wall
+                                -Wno-deprecations
+                                   -- This package is legacy and won't address deprecation warnings.
 
 Source-Repository head
   Type:     git

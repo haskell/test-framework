@@ -88,7 +88,8 @@ Library
         Ghc-Options:            -Wall
                                 -Wcompat
                                 -Wnoncanonical-monad-instances
-                                -Wnoncanonical-monadfail-instances
+                                -Wno-deprecations
+                                   -- This package is legacy and won't address deprecation warnings.
 
         if impl(ghc)
                 Cpp-Options:    -DCOMPILER_GHC
@@ -146,7 +147,10 @@ Test-Suite test-framework-tests
 
         Cpp-Options:            -DTEST
 
-        Ghc-Options:            -Wall -threaded
+        Ghc-Options:            -threaded
+                                -Wall
+                                -Wno-deprecations
+                                   -- This package is legacy and won't address deprecation warnings.
 
         if impl(ghc)
                 Cpp-Options:    -DCOMPILER_GHC
