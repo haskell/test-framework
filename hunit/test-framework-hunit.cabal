@@ -27,9 +27,6 @@ Tested-With:
   GHC == 8.2.2
   GHC == 8.0.2
 
-extra-doc-files:
-  README.md
-
 Library
     Default-Language:       Haskell2010
     Default-Extensions:     TypeOperators
