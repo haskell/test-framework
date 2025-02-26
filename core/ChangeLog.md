@@ -1,6 +1,8 @@
 #### 0.8.2.1
 
-- Support `random-1.3`
+_2025-02-26, Andreas Abel_
+
+- Support `random-1.3` and other latest dependencies
 - Drop support for GHC 7
 - Drop support for dependency versions that predate Stackage LTS 9.21
 - Tested building with GHC 8.0 - 9.12.1
