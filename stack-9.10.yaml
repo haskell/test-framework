@@ -1,0 +1,18 @@
+resolver: nightly-2025-02-24
+
+packages:
+  - core
+  - hunit
+  - quickcheck2
+  - example
+
+extra-deps:
+  - libxml-0.1.1
+
+ghc-options:
+  $locals: >-
+    -Wall
+    -Wcompat
+    -Wno-deprecations
+    -Wno-x-partial
+  # This package is legacy and won't address deprecation warnings.

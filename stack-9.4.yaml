@@ -1,0 +1,17 @@
+resolver: lts-21.25
+
+packages:
+  - core
+  - hunit
+  - quickcheck2
+  - example
+
+extra-deps:
+  - libxml-0.1.1
+
+ghc-options:
+  $locals: >-
+    -Wall
+    -Wcompat
+    -Wno-deprecations
+  # This package is legacy and won't address deprecation warnings.
