@@ -7,7 +7,9 @@
 test-framework
 ==============
 
-This framework for organize tests is considered legacy and no longer actively developed.
+This framework for organizing tests is mature and stable, but it is no longer actively developed.
+
+NEW FEATURE REQUESTS AND CONTRIBUTIONS ARE NO LONGER ACCEPTED!
 
 Old homepage: https://haskell.github.io/test-framework/
 
@@ -15,6 +17,6 @@ New users are encouraged to look into more actively developed test frameworks,
 for instance:
 
 - [hspec](https://hackage.haskell.org/package/hspec)
-- [tasty](https://hackage.haskell.or/package/tasty)
+- [tasty](https://hackage.haskell.org/package/tasty)
 
 (Developers: if you want to see your test framework listed here, please open a pull request.)
