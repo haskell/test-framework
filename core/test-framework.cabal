@@ -83,10 +83,7 @@ Library
                                 NondecreasingIndentation
                                   -- workaround https://github.com/haskell/cabal/issues/4443
 
-        Ghc-Options:            -Wall
-                                -Wcompat
-                                -Wnoncanonical-monad-instances
-                                -Wno-deprecations
+        Ghc-Options:            -Wno-deprecations
                                    -- This package is legacy and won't address deprecation warnings.
 
         if impl(ghc)

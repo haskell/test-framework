@@ -1,12 +1,19 @@
--- See also http://cabal.readthedocs.io/en/latest/nix-local-build-overview.html
-
 -- NB: ./quickcheck is deprecated
-packages: ./core
-          ./hunit
-          ./quickcheck2
-          ./example
+packages:
+  ./core
+  ./hunit
+  ./quickcheck2
+  ./example
 
 -- On Debian/Ubuntu you may need the following to workaround an issue in libxml's packaging
 
 -- package libxml
 --     extra-include-dirs: /usr/include/libxml2
+
+program-options
+  ghc-options:
+    -Wall
+    -Wcompat
+    -Wno-deprecations
+       -- This package is legacy and won't address deprecation warnings.
+    -Wno-x-partial

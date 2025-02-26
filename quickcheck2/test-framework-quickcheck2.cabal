@@ -46,8 +46,7 @@ Library
                               , extensible-exceptions >= 0.1.1  && < 0.2.0
                               , random                >= 1      && < 1.4
 
-        Ghc-Options:            -Wall
-                                -Wno-deprecations
+        Ghc-Options:            -Wno-deprecations
                                    -- This package is legacy and won't address deprecation warnings.
 
 Source-Repository head

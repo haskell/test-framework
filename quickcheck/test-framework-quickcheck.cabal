@@ -35,7 +35,7 @@ Library
                                 MultiParamTypeClasses
                                 ExistentialQuantification
 
-        Ghc-Options:            -Wall
+        Ghc-Options:            -Wno-deprecations
 
 Source-Repository head
   Type:     git
