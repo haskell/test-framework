@@ -235,6 +235,8 @@ jobs:
           cat >> cabal.project <<EOF
           package libxml
             extra-include-dirs: /usr/include/libxml2
+
+          allow-newer: containers
           EOF
           $HCPKG list --simple-output --names-only | perl -ne 'for (split /\s+/) { print "constraints: any.$_ installed\n" unless /^(test-framework|test-framework-example|test-framework-hunit|test-framework-quickcheck2)$/; }' >> cabal.project.local
           cat cabal.project
@@ -279,6 +281,16 @@ jobs:
         run: |
           rm -f cabal.project.local
           $CABAL v2-build $ARG_COMPILER --disable-tests --disable-benchmarks all
+      - name: prepare for constraint sets
+        run: |
+          rm -f cabal.project.local
+      - name: constraint set containers-0.8
+        run: |
+          if [ $((HCNUMVER >= 80200)) -ne 0 ] ; then $CABAL v2-build $ARG_COMPILER --enable-tests --disable-benchmarks --constraint='containers ^>=0.8' all --dry-run ; fi
+          if [ $((HCNUMVER >= 80200)) -ne 0 ] ; then cabal-plan topo | sort ; fi
+          if [ $((HCNUMVER >= 80200)) -ne 0 ] ; then $CABAL v2-build $ARG_COMPILER --enable-tests --disable-benchmarks --constraint='containers ^>=0.8' --dependencies-only -j2 all ; fi
+          if [ $((HCNUMVER >= 80200)) -ne 0 ] ; then $CABAL v2-build $ARG_COMPILER --enable-tests --disable-benchmarks --constraint='containers ^>=0.8' all ; fi
+          if [ $((HCNUMVER >= 80200)) -ne 0 ] ; then $CABAL v2-test $ARG_COMPILER --enable-tests --disable-benchmarks --constraint='containers ^>=0.8' all ; fi
       - name: save cache
         if: always()
         uses: actions/cache/save@v4
