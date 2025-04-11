@@ -6,9 +6,6 @@ packages:
   - quickcheck2
   - example
 
-extra-deps:
-  - libxml-0.1.1
-
 ghc-options:
   $locals: >-
     -Wall

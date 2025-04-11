@@ -1,3 +1,10 @@
+#### 0.8.2.2
+
+_2025-04-11, Andreas Abel_
+
+- Drop `libxml` dependency in testsuite
+- Tested building with GHC 8.0 - 9.12.2
+
 #### 0.8.2.1
 
 _2025-02-26, Andreas Abel_

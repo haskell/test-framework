@@ -8,19 +8,14 @@ import Test.Framework.Runners.XML.JUnitWriter ( RunDescription(..), morphFlatTes
 
 import Test.HUnit.Base               ( Test(..), (@?=) )
 import Test.QuickCheck               ( Arbitrary, sized, Gen, oneof, listOf, arbitrary )
-import Test.QuickCheck.Property as P ( Property )
+import qualified Test.QuickCheck.Property as QC ( Property, property )
 
 import Control.Monad ( ap, liftM2, liftM3 )
 
 import Data.Maybe ( isJust )
 
-import qualified Data.ByteString.UTF8 as UTF8
-
-import qualified Text.XML.Light as XML         ( findAttr, unqual )
-import qualified Text.XML.LibXML.Parser as XML ( parseMemory_ )
-import qualified Text.XML.LibXML.Types as XML  ( Document )
-
-import Test.QuickCheck.Property as P (morallyDubiousIOProperty)
+import qualified Text.XML.Light as XML         ( Element, findAttr, unqual )
+import qualified Text.XML.Light.Input as XML   ( parseXMLDoc )
 
 -- | `Arbitrary` instance for `TestResult` generation.
 instance Arbitrary FinishedTest where
@@ -89,11 +84,11 @@ arbitraryXmlStr = listOf arbitraryXmlChar
 
 -- | Generate random `RunDescriptions`, serialize to (flat) XML strings, then check that they are XML
 -- TODO: check them against the JUnit schema
-property :: RunDescription -> P.Property
-property = morallyDubiousIOProperty . fmap isJust . parseSerialize
+property :: RunDescription -> QC.Property
+property = QC.property . isJust . parseSerialize
 
-parseSerialize :: RunDescription -> IO (Maybe XML.Document)
-parseSerialize = XML.parseMemory_ . UTF8.fromString . serialize False
+parseSerialize :: RunDescription -> Maybe XML.Element
+parseSerialize = XML.parseXMLDoc . serialize False
 
 -- | Verify that the group names are properly prepended to sub-tests.
 test :: Test

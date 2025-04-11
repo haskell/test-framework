@@ -1,7 +1,6 @@
 Cabal-Version:       1.18
 Name:                test-framework
-Version:             0.8.2.1
-x-revision:          1
+Version:             0.8.2.2
 Category:            Testing
 Synopsis:            Framework for running and organising tests, with HUnit and QuickCheck support
 Description:         Allows tests such as QuickCheck properties and HUnit test cases to be assembled into test groups, run in
@@ -110,9 +109,6 @@ Test-Suite test-framework-tests
         Main-Is:                Tests.hs
         Type:                   exitcode-stdio-1.0
 
-        -- Doe to libxml dependency, the testsuite is not buildable on e.g. MacOS
-        -- Buildable:              False
-
         -- Lower bounds from LTS-9.21 (GHC 8.0.2)
         Build-Depends:          HUnit          >= 1.5.0.0
                               , QuickCheck     >= 2.9.2   && < 2.16
@@ -126,10 +122,8 @@ Test-Suite test-framework-tests
                               , time           >= 1.6
                               , xml            >= 1.3.14
                               , hostname       >= 1.0
-                              , libxml         >= 0.1.1
                               , bytestring     >= 0.10.8
                               , semigroups     >= 0.18
-                              , utf8-string    >= 1.0.1.1 && <1.1
 
         Default-Language:       Haskell2010
         Default-Extensions:     CPP
