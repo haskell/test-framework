@@ -37,6 +37,6 @@ Executable test-framework-example
 
         Build-Depends:          base                       >= 4.9      && < 5
                               , HUnit                      >= 1.5.0.0  && < 1.7
-                              , QuickCheck                 >= 2.9.2    && < 2.16
+                              , QuickCheck                 >= 2.9.2    && < 3
 
         Ghc-Options:            -threaded
