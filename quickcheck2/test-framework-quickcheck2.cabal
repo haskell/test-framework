@@ -45,7 +45,6 @@ Library
         Build-Depends:          test-framework        == 0.8.*
                               , QuickCheck            >= 2.9.2  && < 3
                               , base                  >= 4.9    && < 5
-                              , extensible-exceptions >= 0.1.1  && < 0.2.0
                               , random                >= 1      && < 1.4
 
         Ghc-Options:            -Wno-deprecations
