@@ -1,4 +1,3 @@
-{-# LANGUAGE DeriveDataTypeable #-}
 -- | Allows QuickCheck1 properties to be used with the test-framework package.
 --
 -- For an example of how to use test-framework, please see <http://github.com/batterseapower/test-framework/raw/master/example/Test/Framework/Example.lhs>
@@ -61,7 +60,6 @@ propertySucceeded (PropertyResult { pr_status = status, pr_tests_run = mb_n }) =
 
 
 data Property = forall a. Testable a => Property a
-    deriving Typeable
 
 instance Testlike PropertyTestCount PropertyResult Property where
     runTest topts (Property testable) = runProperty topts testable

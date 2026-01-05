@@ -1,3 +1,10 @@
+#### 0.8.2.3
+
+_2026-01-05, Andreas Abel_
+
+- Remove obsolete `deriving Typeable`
+- Tested building with GHC 8.0 - 9.14.1
+
 #### 0.8.2.2
 
 _2025-04-11, Andreas Abel_

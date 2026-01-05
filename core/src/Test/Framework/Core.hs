@@ -1,4 +1,5 @@
-{-# LANGUAGE UndecidableInstances, DeriveDataTypeable #-}
+{-# LANGUAGE UndecidableInstances #-}
+
 module Test.Framework.Core where
 
 import Test.Framework.Improving
@@ -59,9 +60,7 @@ buildTest mx = BuildTestBracketed (fmap (flip (,) (return ())) mx)
 buildTestBracketed :: IO (Test, IO ()) -> Test
 buildTestBracketed = BuildTestBracketed
 
-
 data MutuallyExcluded t = ME (MVar ()) t
-    deriving Typeable
 
 -- This requires UndecidableInstances, but I think it can't be made inconsistent?
 instance Testlike i r t => Testlike i r (MutuallyExcluded t) where
