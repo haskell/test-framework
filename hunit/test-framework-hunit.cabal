@@ -1,6 +1,6 @@
 Cabal-Version:       1.18
 Name:                test-framework-hunit
-Version:             0.3.0.2
+Version:             0.3.0.3
 Category:            Testing
 Synopsis:            HUnit support for the test-framework package.
 License:             BSD3
@@ -12,9 +12,13 @@ Bug-Reports:         https://github.com/haskell/test-framework/issues
 Build-Type:          Simple
 Description:         @HUnit@ support for the @test-framework@ package.
 
+extra-doc-files:
+  ChangeLog.md
+
 Tested-With:
+  GHC == 9.14.1
   GHC == 9.12.2
-  GHC == 9.10.2
+  GHC == 9.10.3
   GHC == 9.8.4
   GHC == 9.6.7
   GHC == 9.4.8

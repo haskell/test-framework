@@ -1,5 +1,4 @@
 {-# LANGUAGE CPP #-}
-{-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeOperators #-}
@@ -19,8 +18,6 @@ import Test.QuickCheck.State (numSuccessTests)
 import Test.QuickCheck.Test
 import Test.QuickCheck.Random (QCGen, mkQCGen)
 import System.Random (randomIO)
-
-import Data.Typeable (Typeable)
 
 
 -- | Create a 'Test' for a QuickCheck2 'Testable' property
@@ -73,7 +70,6 @@ propertySucceeded (PropertyResult { pr_status = status, pr_tests_run = mb_n }) =
 
 
 data Property = forall a. Testable a => Property a
-    deriving Typeable
 
 instance Testlike PropertyTestCount PropertyResult Property where
     runTest topts (Property testable) = runProperty topts testable
