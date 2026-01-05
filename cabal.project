@@ -17,3 +17,6 @@ program-options
     -Wno-deprecations
        -- This package is legacy and won't address deprecation warnings.
     -Wno-x-partial
+    -Wunused-packages
+    -Wincomplete-patterns
+    -Wincomplete-uni-patterns
