@@ -1,6 +1,7 @@
 Cabal-Version:       1.18
 Name:                test-framework
 Version:             0.8.2.3
+x-revision:          1
 
 Category:            Testing
 Synopsis:            Framework for running and organising tests, with HUnit and QuickCheck support
@@ -64,7 +65,7 @@ Library
         -- Lower bounds picked from LTS-7.24 (GHC 8.0.1)
         Build-Depends:          base           >= 4.9      && < 5
                               , ansi-terminal  >= 0.6.3    && < 1.2
-                              , ansi-wl-pprint >= 0.6.7    && < 1.1
+                              , ansi-wl-pprint >= 0.6.7    && < 2
                               , random         >= 1.1      && < 1.4
                               , containers     >= 0.5.7    && < 1
                               , regex-posix    >= 0.95.2   && < 0.97
