@@ -163,7 +163,7 @@ listTests tests = "\ntest-framework: All available tests:\n"++
   where
     showTest :: String -> Test -> [String]
     showTest path (Test name _testlike)    = ["  "++path ++ name]
-    showTest path (TestGroup name gtests)   = concatMap (showTest (path++":"++name)) gtests
+    showTest path (TestGroup name gtests)   = concatMap (showTest (path++name++":")) gtests
     showTest path (PlusTestOptions _ test) = showTest path test
     showTest path (BuildTestBracketed _)   = ["  "++path ++ "<created at runtime>"]
 
